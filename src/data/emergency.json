@@ -1,0 +1,26 @@
+[
+  {
+    "avatar": "https://hips.hearstapps.com/hmg-prod/images/gettyimages-1229892983-square.jpg?resize=1200:*",
+    "name": "Elon Musk",
+    "phone": "R2-D2-Falcon-9",
+    "id": "1"
+  },
+  {
+    "avatar": "./images/bill.jpg",
+    "name": "Bill Gates",
+    "phone": "95-7-8-10-11",
+    "id": "2"
+  },
+  {
+    "avatar": "./images/goit.jpg",
+    "name": "GoIT Mentors",
+    "phone": "BC-48-2023",
+    "id": "3"
+  },
+  {
+    "avatar": "./images/avangers.jpg",
+    "name": "Avangers",
+    "phone": "3000",
+    "id": "4"
+  }
+]
