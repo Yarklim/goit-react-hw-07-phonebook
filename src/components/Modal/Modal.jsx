@@ -1,29 +1,21 @@
-import { useEffect} from 'react';
+import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import { EmergencyContent } from 'components/EmergencyContent';
-import { togleModal } from 'redux/contactSlice';
 import { Backdrop, ModalContent } from './Modal.styled';
 
 const modalRoot = document.querySelector('#modal-root');
 
-export const Modal = () => {
-	const showModal = useSelector(state => state.modal);
-	const dispatch = useDispatch();
-
-	  const toggleModal = () => {
-    dispatch(togleModal(showModal));
-  };
-
+export const Modal = ({ onClose }) => {
   const handleKeyDown = e => {
     if (e.code === 'Escape') {
-      toggleModal();
+      onClose();
     }
   };
 
   const handleBackdropClick = e => {
     if (e.currentTarget === e.target) {
-      toggleModal();
+      onClose();
     }
   };
 
@@ -32,14 +24,16 @@ export const Modal = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   });
 
-
   return createPortal(
     <Backdrop onClick={handleBackdropClick}>
-		  <ModalContent >
-			  <EmergencyContent onClose={toggleModal} />
-	  </ModalContent>
+      <ModalContent>
+        <EmergencyContent onClose={onClose} />
+      </ModalContent>
     </Backdrop>,
     modalRoot
   );
 };
 
+Modal.propTypes = {
+  onClose: PropTypes.func,
+};

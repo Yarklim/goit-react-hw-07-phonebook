@@ -1,11 +1,11 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import {
   Container,
   Title,
   Img,
   ContentList,
   ListItem,
-	Name,
+  Name,
   Phone,
   ButtonClose,
   Link,
@@ -17,7 +17,7 @@ import bill from '../images/bill.jpg';
 import goit from '../images/goit.jpg';
 import avangers from '../images/avangers.jpg';
 
-export const EmergencyContent = ({onClose}) => {
+export const EmergencyContent = ({ onClose }) => {
   return (
     <Container>
       <Title>Call them if you have problems with your homework!</Title>
@@ -58,11 +58,13 @@ export const EmergencyContent = ({onClose}) => {
           </Link>
         </ListItem>
       </ContentList>
-      <ButtonClose type="button" onClick={onClose}>Close</ButtonClose>
+      <ButtonClose type="button" onClick={onClose}>
+        Close
+      </ButtonClose>
     </Container>
   );
 };
 
 EmergencyContent.propTypes = {
-	onClose: PropTypes.func,
-}
+  onClose: PropTypes.func,
+};

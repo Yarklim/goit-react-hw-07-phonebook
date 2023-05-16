@@ -1,22 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { addContacts, deleteContacts, getContacts } from './operations';
 
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState: {
-    contacts: [],
+    contacts: {
+      items: [],
+      isLoading: false,
+      error: null,
+    },
     filter: '',
-    modal: false,
   },
   reducers: {
-    addContact(state, { payload }) {
-      state.contacts.push(payload);
-    },
-    deleteContact(state, { payload }) {
-      return {
-        ...state,
-        contacts: state.contacts.filter(contact => contact.id !== payload),
-      };
-    },
     filterContact: {
       reducer(state, { payload }) {
         state.filter = payload;
@@ -27,13 +22,45 @@ const contactsSlice = createSlice({
         };
       },
     },
-    togleModal(state, { payload }) {
-      state.modal = !payload;
-    },
+  },
+  extraReducers: builder => {
+    builder
+      .addCase(getContacts.fulfilled, (state, { payload }) => {
+        state.contacts.items = payload;
+      })
+      .addCase(addContacts.fulfilled, (state, { payload }) => {
+        state.contacts.items.push(payload);
+      })
+      .addCase(deleteContacts.fulfilled, (state, { payload }) => {
+        const contactIndex = state.contacts.items.findIndex(
+          contact => contact.id === payload
+        );
+        state.contacts.items.splice(contactIndex, 1);
+      })
+      .addMatcher(
+        action => action.type.endsWith('/pending'),
+        (state, { payload }) => {
+          state.contacts.isLoading = true;
+          state.contacts.error = null;
+        }
+      )
+      .addMatcher(
+        action => action.type.endsWith('/rejected'),
+        (state, { payload }) => {
+          state.contacts.isLoading = false;
+          state.contacts.error = payload;
+        }
+      )
+      .addMatcher(
+        action => action.type.endsWith('/fulfilled'),
+        (state, { payload }) => {
+          state.contacts.isLoading = false;
+          state.contacts.error = null;
+        }
+      );
   },
 });
 
-export const { addContact, deleteContact, filterContact, togleModal } =
-  contactsSlice.actions;
+export const { filterContact } = contactsSlice.actions;
 
-export default contactsSlice.reducer;
+export const contactsReducer = contactsSlice.reducer;

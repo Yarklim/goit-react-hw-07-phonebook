@@ -1,10 +1,12 @@
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteContact } from '../../redux/contactSlice';
+import { deleteContacts, getContacts } from 'redux/operations';
+import { selectorContacts, selectorFilter } from 'redux/selectors';
 import { List, Item, BtnDelete } from './ContactList.styled';
 
 export const ContactList = () => {
-  const contacts = useSelector(state => state.contacts);
-  const filter = useSelector(state => state.filter);
+  const contacts = useSelector(selectorContacts);
+  const filter = useSelector(selectorFilter);
   const dispatch = useDispatch();
 
   const handleFilter = () => {
@@ -12,22 +14,24 @@ export const ContactList = () => {
     return contacts.filter(
       contact =>
         contact.name.toLowerCase().includes(filter.toLowerCase()) ||
-        contact.number.includes(filter)
+        contact.phone.includes(filter)
     );
-	};
-	
-	const filteredContacts = handleFilter();
+  };
+
+  const filteredContacts = handleFilter();
+
+  useEffect(() => {
+    dispatch(getContacts());
+  }, [dispatch]);
 
   return (
     <List>
       {filteredContacts.map(contact => (
         <Item key={contact.id}>
-          <p>
-            {contact.name}: {contact.number}
-          </p>
+          <p>{`${contact.name}:  ${contact.phone}`}</p>
           <BtnDelete
             type="button"
-            onClick={() => dispatch(deleteContact(contact.id))}
+            onClick={() => dispatch(deleteContacts(contact.id))}
           >
             Delete
           </BtnDelete>
